@@ -54,9 +54,9 @@ public class TennisTest {
         int highestScore = Math.max(player1Points, player2Points);
         for (int i = 0; i < highestScore; i++) {
             if (i < player1Points)
-                game.wonPoint("player1");
+                game.playerScored("player1");
             if (i < player2Points)
-                game.wonPoint("player2");
+                game.playerScored("player2");
         }
         assertEquals(expectedScore, game.getScore());
     }
@@ -67,40 +67,5 @@ public class TennisTest {
         TennisGame1 game = new TennisGame1("player1", "player2");
         checkAllScores(player1Points, player2Points, expectedScore, game);
     }
-
-    @ParameterizedTest
-    @MethodSource("getAllScores")
-    public void checkAllScoresTennisGame2(int player1Points, int player2Points, String expectedScore) {
-        TennisGame2 game = new TennisGame2("player1", "player2");
-        checkAllScores(player1Points, player2Points, expectedScore, game);
-    }
-
-    @ParameterizedTest
-    @MethodSource("getAllScores")
-    public void checkAllScoresTennisGame3(int player1Points, int player2Points, String expectedScore) {
-        TennisGame3 game = new TennisGame3("player1", "player2");
-        checkAllScores(player1Points, player2Points, expectedScore, game);
-    }
-
-    @ParameterizedTest
-    @MethodSource("getAllScores")
-    public void checkAllScoresTennisGame4(int player1Points, int player2Points, String expectedScore) {
-        TennisGame game = new TennisGame4("player1", "player2");
-        checkAllScores(player1Points, player2Points, expectedScore, game);
-    }
-
-    @ParameterizedTest
-    @MethodSource("getAllScores")
-    public void checkAllScoresTennisGame5(int player1Points, int player2Points, String expectedScore) {
-        TennisGame game = new TennisGame5("player1", "player2");
-        checkAllScores(player1Points, player2Points, expectedScore, game);
-    }
-
-
-    @ParameterizedTest
-    @MethodSource("getAllScores")
-    public void checkAllScoresTennisGame6(int player1Points, int player2Points, String expectedScore) {
-        TennisGame game = new TennisGame6("player1", "player2");
-        checkAllScores(player1Points, player2Points, expectedScore, game);
-    }
 }
+

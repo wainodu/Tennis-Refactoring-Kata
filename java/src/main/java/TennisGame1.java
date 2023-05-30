@@ -1,76 +1,91 @@
 
 public class TennisGame1 implements TennisGame {
-    
-    private int m_score1 = 0;
-    private int m_score2 = 0;
-    private String player1Name;
-    private String player2Name;
+    private Player player1;
+    private Player player2;
 
     public TennisGame1(String player1Name, String player2Name) {
-        this.player1Name = player1Name;
-        this.player2Name = player2Name;
+        player1 = new Player(player1Name);
+        player2 = new Player(player2Name);
     }
 
-    public void wonPoint(String playerName) {
-        if (playerName == "player1")
-            m_score1 += 1;
-        else
-            m_score2 += 1;
+    public void playerScored(String playerName) {
+        if (playerName.equals(player1.getName())) {
+            player1.incrementScore();
+        } else if (playerName.equals(player2.getName())) {
+            player2.incrementScore();
+        }
     }
 
     public String getScore() {
         String score = "";
-        int tempScore=0;
-        if (m_score1==m_score2)
-        {
-            switch (m_score1)
-            {
+        int player1Score = player1.getScore();
+        int player2Score = player2.getScore();
+
+        if (player1Score == player2Score) {
+            score = getEvenScore(player1Score);
+        } else if (player1Score >= 4 || player2Score >= 4) {
+            score = getAdvantageOrWinningScore(player1Score, player2Score);
+        } else {
+            score = getRegularScore(player1Score, player2Score);
+        }
+
+        return score;
+    }
+
+    private String getEvenScore(int player1Score) {
+        switch (player1Score) {
+            case 0:
+                return "Love-All";
+            case 1:
+                return "Fifteen-All";
+            case 2:
+                return "Thirty-All";
+            default:
+                return "Deuce";
+        }
+    }
+
+    private String getAdvantageOrWinningScore(int player1Score, int player2Score) {
+        int difference = player1Score - player2Score;
+
+        if (difference == 1) {
+            return "Advantage " + player1.getName();
+        } else if (difference == -1) {
+            return "Advantage " + player2.getName();
+        } else if (difference >= 2) {
+            return "Win for " + player1.getName();
+        } else {
+            return "Win for " + player2.getName();
+        }
+    }
+
+    private String getRegularScore(int player1Score, int player2Score) {
+        StringBuilder score = new StringBuilder();
+
+        for (int i = 1; i <= 2; i++) {
+            Player currentPlayer = (i == 1) ? player1 : player2;
+            int currentScore = currentPlayer.getScore();
+
+            switch (currentScore) {
                 case 0:
-                        score = "Love-All";
+                    score.append("Love");
                     break;
                 case 1:
-                        score = "Fifteen-All";
+                    score.append("Fifteen");
                     break;
                 case 2:
-                        score = "Thirty-All";
+                    score.append("Thirty");
                     break;
-                default:
-                        score = "Deuce";
+                case 3:
+                    score.append("Forty");
                     break;
-                
+            }
+
+            if (i == 1 && player1Score != player2Score) {
+                score.append("-");
             }
         }
-        else if (m_score1>=4 || m_score2>=4)
-        {
-            int minusResult = m_score1-m_score2;
-            if (minusResult==1) score ="Advantage player1";
-            else if (minusResult ==-1) score ="Advantage player2";
-            else if (minusResult>=2) score = "Win for player1";
-            else score ="Win for player2";
-        }
-        else
-        {
-            for (int i=1; i<3; i++)
-            {
-                if (i==1) tempScore = m_score1;
-                else { score+="-"; tempScore = m_score2;}
-                switch(tempScore)
-                {
-                    case 0:
-                        score+="Love";
-                        break;
-                    case 1:
-                        score+="Fifteen";
-                        break;
-                    case 2:
-                        score+="Thirty";
-                        break;
-                    case 3:
-                        score+="Forty";
-                        break;
-                }
-            }
-        }
-        return score;
+
+        return score.toString();
     }
 }
